@@ -1,5 +1,9 @@
-function App() {
-  return <div className="App">Hello World</div>;
-}
+import Navbar from './components/Navbar';
 
-export default App;
+export default function App() {
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
+}
