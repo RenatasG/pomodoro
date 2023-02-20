@@ -3,7 +3,7 @@ interface Props {
 }
 
 const BaseButton = ({ children }: Props) => (
-  <button className="px-3 py-2 text-white rounded-lg bg-primary-500 hover:bg-primary-600">
+  <button className="px-3 py-2 text-white transition rounded-lg bg-primary-500 hover:bg-primary-600">
     {children}
   </button>
 );
