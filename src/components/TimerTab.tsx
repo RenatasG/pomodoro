@@ -9,10 +9,10 @@ const TimerTab = ({ name, count, mode, isOpen, onTabClick }: TimerTabType) => {
   return (
     <button
       className={
-        'flex justify-center w-full max-w-md py-2 mx-auto text-xl  transition rounded-t-lg' +
+        'flex justify-center w-full max-w-md py-2 mx-auto text-xl transition-[background-color] rounded-t-lg duration-300' +
         (mode === 'focus'
-          ? ' text-primary-500 hover:bg-primary-500/10'
-          : ' text-secondary-500 hover:bg-secondary-500/10') +
+          ? ' text-blue-600 hover:bg-blue-500/10'
+          : ' text-green-700 hover:bg-green-500/10') +
         (isOpen ? ' cursor-default border-b border-b-black' : '')
       }
       onClick={onClick}>

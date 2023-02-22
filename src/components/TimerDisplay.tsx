@@ -10,8 +10,8 @@ const TimerDisplay = ({ mode }: Props) => {
       className={
         'flex items-end  justify-center border-[5px] rounded-full h-96 w-96 cursor-pointer' +
         (mode === 'focus'
-          ? ' bg-blue-50 text-primary-500 hover:bg-blue-100/70 border-blue-200/50'
-          : ' bg-green-50 text-green-700 hover:bg-green-100/70 border-green-500/20')
+          ? ' bg-blue-50 text-blue-600 hover:bg-blue-100/70 border-blue-200/50'
+          : ' bg-green-50 text-green-600 hover:bg-green-100/70 border-green-500/20')
       }>
       <div className="flex flex-col items-center h-48 mb-14">
         <div className="text-8xl">

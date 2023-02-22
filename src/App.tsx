@@ -4,7 +4,7 @@ import Timer from './components/Timer';
 
 export default function App() {
   return (
-    <div className="w-screen h-screen p-[0.15rem] bg-primary-500">
+    <div className="w-screen h-screen p-[0.15rem] bg-blue-600">
       <div className="w-full h-full overflow-y-auto bg-white rounded-t-xl">
         <Header />
 

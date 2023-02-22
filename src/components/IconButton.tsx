@@ -15,7 +15,7 @@ const IconButton = ({ children, icon, iconClass, onClick }: Props) => {
 
   return (
     <button
-      className="flex items-center p-2 rounded-lg gap-x-2 hover:bg-primary-500/10 hover:text-primary-500"
+      className="flex items-center p-2 rounded-lg gap-x-2 hover:bg-blue-500/10 hover:text-blue-600"
       onClick={onClick}>
       <svg className={classes}>
         <use href={iconPath} xlinkHref={iconPath} />
