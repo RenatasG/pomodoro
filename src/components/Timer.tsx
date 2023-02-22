@@ -36,7 +36,7 @@ const Timer = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto select-none">
       <div className="flex">
         <TimerTab {...tabs.focus} />
         <TimerTab {...tabs.rest} />
