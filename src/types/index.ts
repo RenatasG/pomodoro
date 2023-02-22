@@ -1,9 +1,9 @@
-export type PMode = 'focus' | 'rest' | 'long-rest';
+export type Mode = 'focus' | 'rest' | 'long_rest';
 
 export interface TimerTabType {
   name: string;
   count: number;
-  mode: PMode;
+  mode: Mode;
   isOpen: boolean;
-  onTabClick: (mode: PMode) => void;
+  onTabClick: (mode: Mode) => void;
 }
