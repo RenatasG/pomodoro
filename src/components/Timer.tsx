@@ -15,6 +15,7 @@ const Timer = () => {
     focus: {
       name: 'Pomodoro',
       count: 0,
+      time: 25,
       mode: 'focus',
       isOpen: isOpen('focus'),
       onTabClick,
@@ -22,6 +23,7 @@ const Timer = () => {
     rest: {
       name: 'Rest',
       count: 0,
+      time: 5,
       mode: 'rest',
       isOpen: isOpen('rest'),
       onTabClick,
@@ -29,6 +31,7 @@ const Timer = () => {
     long_rest: {
       name: 'Long Rest',
       count: 0,
+      time: 15,
       mode: 'long_rest',
       isOpen: isOpen('long_rest'),
       onTabClick,
@@ -43,8 +46,8 @@ const Timer = () => {
         <TimerTab {...tabs.long_rest} />
       </div>
 
-      <div className="mx-10 mt-5">
-        <TimerDisplay mode={currentMode} />
+      <div className="mx-8 mt-5">
+        <TimerDisplay minutes={tabs[currentMode].time} mode={currentMode} />
       </div>
     </div>
   );
