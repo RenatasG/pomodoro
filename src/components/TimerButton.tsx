@@ -9,23 +9,23 @@ interface Props {
 
 type Theme = {
   [key in Mode]: {
-    [key: string]: string;
+    [key: number]: string;
   };
 };
 
 const TimerButton = ({ children, mode, onClick, inverted = false }: Props) => {
   const theme: Theme = {
     focus: {
-      false: 'text-white bg-blue-600 hover:bg-blue-700',
-      true: 'bg-white text-blue-600 ring-blue-600 ring-1',
+      0: 'text-white bg-blue-600 hover:bg-blue-700',
+      1: 'bg-white text-blue-600 ring-blue-600 ring-1',
     },
     rest: {
-      false: 'text-white bg-green-700 hover:bg-green-800',
-      true: 'bg-white text-green-600 ring-1 ring-green-700',
+      0: 'text-white bg-green-700 hover:bg-green-800',
+      1: 'bg-white text-green-600 ring-1 ring-green-700',
     },
     long_rest: {
-      false: 'text-white bg-green-700 hover:bg-green-800',
-      true: 'bg-white text-green-600 ring-1 ring-green-700',
+      0: 'text-white bg-green-700 hover:bg-green-800',
+      1: 'bg-white text-green-600 ring-1 ring-green-700',
     },
   };
 
@@ -34,7 +34,7 @@ const TimerButton = ({ children, mode, onClick, inverted = false }: Props) => {
       onClick={onClick}
       className={
         'w-full py-4 mt-6 text-2xl font-bold tracking-widest uppercase transition rounded-full shadow ' +
-        theme[mode][inverted.toString()]
+        theme[mode][+inverted]
       }>
       {children}
     </button>
