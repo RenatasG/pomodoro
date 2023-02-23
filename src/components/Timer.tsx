@@ -10,12 +10,12 @@ type Tabs = {
 
 const Timer = () => {
   const [currentMode, setCurrentMode] = useState<Mode>('focus');
+  const [currentTime, setCurrentTime] = useState(25);
 
   const tabs: Tabs = {
     focus: {
       name: 'Pomodoro',
       count: 0,
-      time: 25,
       mode: 'focus',
       isOpen: isOpen('focus'),
       onTabClick,
@@ -23,7 +23,6 @@ const Timer = () => {
     rest: {
       name: 'Rest',
       count: 0,
-      time: 5,
       mode: 'rest',
       isOpen: isOpen('rest'),
       onTabClick,
@@ -31,7 +30,6 @@ const Timer = () => {
     long_rest: {
       name: 'Long Rest',
       count: 0,
-      time: 15,
       mode: 'long_rest',
       isOpen: isOpen('long_rest'),
       onTabClick,
@@ -47,13 +45,14 @@ const Timer = () => {
       </div>
 
       <div className="mx-8 mt-5">
-        <TimerDisplay minutes={tabs[currentMode].time} mode={currentMode} />
+        <TimerDisplay minutes={currentTime} mode={currentMode} />
       </div>
     </div>
   );
 
   function onTabClick(mode: Mode) {
     setCurrentMode(mode);
+    setCurrentTime(mode === 'focus' ? 25 : 5);
   }
 
   function isOpen(mode: Mode) {
