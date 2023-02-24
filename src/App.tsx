@@ -19,12 +19,14 @@ export default function App() {
 
 // make timer active and disable tab switching
 // make timer switch between focus and rest modes
+// make timer switch to long rest every 4th focus mode
 // add base focus modes
 // add custom focus modes
-// add timer pause, stop and reset
+// add timer stop and reset
 // add auto start
 // add skip to break/long break
 // add timer border animation synced with timer
 // add fixed music player layout
 // implement tasks with local storage
 // FAQ section
+// show remaining time in website title

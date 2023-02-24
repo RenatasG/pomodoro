@@ -16,6 +16,7 @@ const TimerDisplay = ({ mode, minutes }: Props) => {
   useEffect(() => {
     if (active) {
       const interval = setInterval(tick, 1000);
+      // TODO figure out this return
       return () => clearInterval(interval);
     }
 
@@ -30,11 +31,15 @@ const TimerDisplay = ({ mode, minutes }: Props) => {
         return;
       }
       setSecLeft(secLeft - 1);
-      console.log('tick', secLeft);
     }
-  });
+    // TODO why do i need minLeft and secLeft here if this only runs when `active` changes
+    // TODO why does it work without providing a dependency array
+  }, [active, minLeft, secLeft]);
 
-  // doesn't rerender if remaining is a local variable and not a state
+  useEffect(() => {
+    setMinLeft(minutes);
+    setSecLeft(0);
+  }, [minutes]);
 
   return (
     <>
