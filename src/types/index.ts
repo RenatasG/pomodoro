@@ -5,5 +5,6 @@ export interface TimerTabType {
   count: number;
   mode: Mode;
   isOpen: boolean;
+  isDisabled: boolean;
   onTabClick: (mode: Mode) => void;
 }

@@ -1,8 +1,15 @@
 import type { TimerTabType } from '../types';
 
-const TimerTab = ({ name, count, mode, isOpen, onTabClick }: TimerTabType) => {
+const TimerTab = ({
+  name,
+  count,
+  mode,
+  isOpen,
+  onTabClick,
+  isDisabled,
+}: TimerTabType) => {
   const onClick = () => {
-    if (isOpen) return;
+    if (isOpen || isDisabled) return;
     onTabClick(mode);
   };
 
@@ -13,7 +20,8 @@ const TimerTab = ({ name, count, mode, isOpen, onTabClick }: TimerTabType) => {
         (mode === 'focus'
           ? ' text-blue-600 hover:bg-blue-500/10'
           : ' text-green-700 hover:bg-green-500/10') +
-        (isOpen ? ' cursor-default border-b border-b-black' : '')
+        (isOpen ? ' cursor-default border-b border-b-black' : '') +
+        (isDisabled ? ' cursor-not-allowed opacity-50' : '')
       }
       onClick={onClick}>
       {name}
