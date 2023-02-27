@@ -11,15 +11,18 @@ type Tabs = {
 
 const Timer = () => {
   const [currentMode, setCurrentMode] = useState<Mode>('focus');
-  const [focusTime, setFocusTime] = useState(25);
+  const [pomoTime, setPomoTime] = useState(25);
   const [active, setActive] = useState(false);
-  const [minLeft, setMinLeft] = useState(focusTime);
+  const [minLeft, setMinLeft] = useState(pomoTime);
   const [secLeft, setSecLeft] = useState(0);
+  const [focused, setFocused] = useState(0);
+  const [rested, setRested] = useState(0);
+  const [longRested, setLongRested] = useState(0);
 
   const tabs: Tabs = {
     focus: {
       name: 'Pomodoro',
-      count: 0,
+      count: focused,
       mode: 'focus',
       isOpen: isOpen('focus'),
       isDisabled: active && currentMode !== 'focus',
@@ -27,7 +30,7 @@ const Timer = () => {
     },
     rest: {
       name: 'Rest',
-      count: 0,
+      count: rested,
       mode: 'rest',
       isOpen: isOpen('rest'),
       isDisabled: active && currentMode !== 'rest',
@@ -35,7 +38,7 @@ const Timer = () => {
     },
     long_rest: {
       name: 'Long Rest',
-      count: 0,
+      count: longRested,
       mode: 'long_rest',
       isOpen: isOpen('long_rest'),
       isDisabled: active && currentMode !== 'long_rest',
@@ -46,27 +49,28 @@ const Timer = () => {
   useEffect(() => {
     if (active) {
       const interval = setInterval(tick, 1000);
-      // TODO
       return () => clearInterval(interval);
     }
 
-    // TODO can this go outside of useEffect?
     function tick() {
+      if (secLeft > 0) {
+        setSecLeft(secLeft - 1);
+        return;
+      }
+
       if (minLeft === 0 && secLeft === 0) {
-        // TODO switch to rest mode
+        setActive(false);
+        switchModes();
         return;
       }
-      if (secLeft === 0) {
-        setMinLeft(minLeft - 1);
-        setSecLeft(59);
-        return;
-      }
-      setSecLeft(secLeft - 1);
+
+      setMinLeft(minLeft - 1);
+      setSecLeft(59);
     }
 
     // TODO why do i need minLeft and secLeft here if this only runs when `active` changes
     // TODO why does it work without providing a dependency array
-  }, [active, minLeft, secLeft]);
+  });
 
   return (
     <div className="max-w-md mx-auto select-none">
@@ -89,7 +93,7 @@ const Timer = () => {
   function onTabClick(mode: Mode) {
     setCurrentMode(mode);
     // TODO
-    setFocusTime(mode === 'focus' ? 25 : 5);
+    setPomoTime(mode === 'focus' ? 25 : 5);
   }
 
   function isOpen(mode: Mode) {
@@ -98,13 +102,40 @@ const Timer = () => {
 
   function toggleTimer() {
     setActive(!active);
-    setMinLeft(focusTime);
+    setMinLeft(pomoTime);
     setSecLeft(0);
   }
 
-  // only gets called when the timer is done
-  // onTabClick will be called to switch to the next mode
-  //   function onModeEnd() {}
+  function switchModes() {
+    incrementMode(currentMode);
+    setPomoTime(5);
+
+    if (currentMode !== 'focus') {
+      setCurrentMode('focus');
+      return;
+    }
+
+    if (rested > 0 && rested % 3 === 0) {
+      setCurrentMode('long_rest');
+      return;
+    }
+
+    setCurrentMode('rest');
+  }
+
+  function incrementMode(mode: Mode) {
+    switch (mode) {
+      case 'focus':
+        setFocused(focused + 1);
+        break;
+      case 'rest':
+        setRested(rested + 1);
+        break;
+      case 'long_rest':
+        setLongRested(longRested + 1);
+        break;
+    }
+  }
 };
 
 export default Timer;

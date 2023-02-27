@@ -29,9 +29,6 @@ const TimerButton = ({ children, mode, onClick, inverted = false }: Props) => {
     },
   };
 
-  // TODO does this log on every tick because child components also rerender whenever the parent's state changes?
-  // console.log('logs on every tick');
-
   return (
     <button
       onClick={onClick}

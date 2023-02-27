@@ -17,9 +17,6 @@ export default function App() {
   );
 }
 
-// make timer active and disable tab switching
-// make timer switch between focus and rest modes
-// make timer switch to long rest every 4th focus mode
 // add base focus modes
 // add custom focus modes
 // add timer stop and reset
