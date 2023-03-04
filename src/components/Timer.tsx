@@ -9,15 +9,22 @@ type Tabs = {
   [key in Mode]: TimerTabType;
 };
 
-const Timer = () => {
+type Props = {
+  focus: number;
+  rest: number;
+  long_rest: number;
+};
+
+const Timer = (times: Props) => {
   const [currentMode, setCurrentMode] = useState<Mode>('focus');
-  const [pomoTime, setPomoTime] = useState(25);
-  const [active, setActive] = useState(false);
-  const [minLeft, setMinLeft] = useState(pomoTime);
+  const [minLeft, setMinLeft] = useState(times[currentMode]);
   const [secLeft, setSecLeft] = useState(0);
+  const [active, setActive] = useState(false);
   const [focused, setFocused] = useState(0);
   const [rested, setRested] = useState(0);
   const [longRested, setLongRested] = useState(0);
+
+  const isOpen = (mode: Mode) => mode === currentMode;
 
   const tabs: Tabs = {
     focus: {
@@ -67,10 +74,12 @@ const Timer = () => {
       setMinLeft(minLeft - 1);
       setSecLeft(59);
     }
-
-    // TODO why do i need minLeft and secLeft here if this only runs when `active` changes
-    // TODO why does it work without providing a dependency array
   });
+
+  useEffect(() => {
+    setMinLeft(times[currentMode]);
+    setSecLeft(0);
+  }, [times, currentMode, active]);
 
   return (
     <div className="max-w-md mx-auto select-none">
@@ -83,7 +92,10 @@ const Timer = () => {
       <div className="mx-8 mt-5">
         <TimerDisplay mode={currentMode} minutes={minLeft} seconds={secLeft} />
 
-        <TimerButton mode={currentMode} inverted={active} onClick={toggleTimer}>
+        <TimerButton
+          mode={currentMode}
+          inverted={active}
+          onClick={() => setActive(!active)}>
           {active ? 'Stop' : 'Start'}
         </TimerButton>
       </div>
@@ -92,35 +104,19 @@ const Timer = () => {
 
   function onTabClick(mode: Mode) {
     setCurrentMode(mode);
-    // TODO
-    setPomoTime(mode === 'focus' ? 25 : 5);
-  }
-
-  function isOpen(mode: Mode) {
-    return mode === currentMode;
-  }
-
-  function toggleTimer() {
-    setActive(!active);
-    setMinLeft(pomoTime);
-    setSecLeft(0);
   }
 
   function switchModes() {
     incrementMode(currentMode);
-    setPomoTime(5);
 
     if (currentMode !== 'focus') {
       setCurrentMode('focus');
       return;
     }
 
-    if (rested > 0 && rested % 3 === 0) {
-      setCurrentMode('long_rest');
-      return;
-    }
-
-    setCurrentMode('rest');
+    rested > 0 && rested % 3 === 0
+      ? setCurrentMode('long_rest')
+      : setCurrentMode('rest');
   }
 
   function incrementMode(mode: Mode) {
