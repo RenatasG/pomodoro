@@ -1,5 +1,5 @@
 import type { Mode, TimerTabType } from '../types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import TimerTab from './TimerTab';
 import TimerDisplay from './TimerDisplay';
@@ -25,6 +25,7 @@ const Timer = (times: Props) => {
   const [longRested, setLongRested] = useState(0);
 
   const isOpen = (mode: Mode) => mode === currentMode;
+  const onTabClick = (mode: Mode) => setCurrentMode(mode);
 
   const tabs: Tabs = {
     focus: {
@@ -53,33 +54,57 @@ const Timer = (times: Props) => {
     },
   };
 
+  const getNextMode = useCallback((): Mode => {
+    if (currentMode !== 'focus') return 'focus';
+    return rested > 0 && rested % 3 === 0 ? 'long_rest' : 'rest';
+  }, [rested, currentMode]);
+
+  const incrementMode = useCallback(() => {
+    switch (currentMode) {
+      case 'focus':
+        setFocused(focused + 1);
+        break;
+      case 'rest':
+        setRested(rested + 1);
+        break;
+      case 'long_rest':
+        setLongRested(longRested + 1);
+        break;
+    }
+  }, [focused, rested, longRested, currentMode]);
+
   useEffect(() => {
     if (active) {
-      const interval = setInterval(tick, 1000);
+      const interval = setInterval(tick, 100);
       return () => clearInterval(interval);
     }
 
     function tick() {
-      if (secLeft > 0) {
-        setSecLeft(secLeft - 1);
+      if (secLeft === 0) {
+        setMinLeft(minLeft - 1);
+        setSecLeft(59);
         return;
       }
 
-      if (minLeft === 0 && secLeft === 0) {
-        setActive(false);
-        switchModes();
-        return;
-      }
-
-      setMinLeft(minLeft - 1);
-      setSecLeft(59);
+      setSecLeft(secLeft - 1);
     }
-  });
+  }, [active, minLeft, secLeft]);
+
+  useEffect(() => {
+    if (minLeft === 0 && secLeft === 0) {
+      setActive(false);
+      incrementMode();
+      const mode = getNextMode();
+      setCurrentMode(mode);
+      setMinLeft(times[mode]);
+      setSecLeft(0);
+    }
+  }, [minLeft, secLeft, incrementMode, times, getNextMode]);
 
   useEffect(() => {
     setMinLeft(times[currentMode]);
     setSecLeft(0);
-  }, [times, currentMode, active]);
+  }, [active, currentMode, times]);
 
   return (
     <div className="max-w-md mx-auto select-none">
@@ -101,37 +126,6 @@ const Timer = (times: Props) => {
       </div>
     </div>
   );
-
-  function onTabClick(mode: Mode) {
-    setCurrentMode(mode);
-  }
-
-  function switchModes() {
-    incrementMode(currentMode);
-
-    if (currentMode !== 'focus') {
-      setCurrentMode('focus');
-      return;
-    }
-
-    rested > 0 && rested % 3 === 0
-      ? setCurrentMode('long_rest')
-      : setCurrentMode('rest');
-  }
-
-  function incrementMode(mode: Mode) {
-    switch (mode) {
-      case 'focus':
-        setFocused(focused + 1);
-        break;
-      case 'rest':
-        setRested(rested + 1);
-        break;
-      case 'long_rest':
-        setLongRested(longRested + 1);
-        break;
-    }
-  }
 };
 
 export default Timer;
